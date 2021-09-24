@@ -1,0 +1,152 @@
+
+
+1 - For Back Up Use Git  , Create the repository
+
+2-  indentation need to be the same .in the Entire Code
+
+3 - For Global Variables 
+
+4 - More Methods for a single big method 
+
+5 - separate the data from the Html , using methods that treat the Html apart and receive as arguments the data .
+
+6 - follow a name convention .
+
+7 - Edit the code 
+
+8 - the API could be witten just the End points intead of the all the Complete URL .
+
+9 - the querySelector that select classes is dangerous because a class can be used with more than one element .
+
+10 - methods should'nt modify and external element out side the scope of the method 
+
+11 - create a method that calls the fetch 
+
+12 - use the Inspector to interact with the dom .  
+
+
+/*--------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+
+<?php
+
+require_once(__DIR__ . "/../../Models/Tweet.php");
+
+
+class TweetController extends Controller
+{
+    
+    public function CreateTweet(Request $request){
+    
+        $body = json_decode($request->content);
+
+        if (isset($body->content) && !empty($body->content)){
+            
+          $id =  Tweet::create(["content"=> $body->content]);
+          $id = array($id);
+            
+            return Response::json(["Message"=> "The Tweet Is Created Successfully" , "Tweets"=> $id] , Response::HTTP_OK , 0);
+        }
+        else
+            return Response::json( ["Message"=> "Body of the Tweet Is Not Provided Correctly"]  , Response::HTTP_BAD_REQUEST );
+    }
+
+    public function deleteTweet(Request $request, $id){
+        
+        if (!empty($id)) {
+            
+            $inside = Tweet::first("id" , $id);
+            
+            if (!empty($inside)){
+                
+                    if ($inside->destroy( "id", "=" , $id))
+                        $inside = Tweet::all();   
+                        return Response::json(["Message"=> "The Tweet Is Deleted Successfully" ,"Tweets"=> $inside] , Response::HTTP_OK , 0);          
+            }
+            else 
+                return Response::json( ["Message"=> "Tweet id Provided Does Not Exist IN THE DATABASE"]  , Response::HTTP_BAD_REQUEST );
+        }    
+        else
+                return Response::json( ["Message"=> "Tweet id Not provided"]  , Response::HTTP_BAD_REQUEST );
+    }
+
+    public function updateTweet(Request $request,$id){
+     
+        $body = json_decode($request->content);   
+
+        if (!empty($id)){
+
+            $inside = Tweet::first("id", $id);
+
+            if (!empty($inside) && isset($body->content) &&  !empty($body->content)) {
+        
+                $inside->content = $body->content;
+                $inside->save(); 
+                return Response::json(["Message"=> "The Tweet is updated successfully" , "Tweets"=> $inside] , Response::HTTP_OK );          
+            }
+            else 
+                return Response::json( ["Message"=> "The Body Of The Tweet Is Not Provided"]  , Response::HTTP_BAD_REQUEST );
+        }
+        else
+            return Response::json( ["Message"=> "Tweet id Not provided"]  , Response::HTTP_BAD_REQUEST );
+    }
+
+    public function getAllTweets(Request $request){     
+
+        $inside = Tweet::all();   
+         
+        if (!empty( $inside)) { 
+
+
+             return Response::json( ["Tweets" =>$inside] , Response::HTTP_OK , 0);
+        }
+        else
+            return Response::json( ["Message"=> "There Are No Tweets"]  , Response::HTTP_BAD_REQUEST , 0 );
+    }
+  
+    public function getComments (Request $request,$id){
+
+        if (!empty($id)){
+
+            $result = Tweet::first("id" , $id);
+            
+            if (!empty($result)){
+
+                $comm = $result->comments();
+                if (!empty($comm))
+              
+                    return Response::json(["Comments"=> $comm] , Response::HTTP_OK , 0);
+                else
+                    return Response::json( ["Message"=> "There Are No Comments For This Tweet"]  , Response::HTTP_BAD_REQUEST );   
+            }
+            else 
+                return Response::json( ["Message"=> "There is No such tweet in the database"]  , Response::HTTP_BAD_REQUEST );   
+        }
+        else
+            return Response::json( ["Message"=> "id Not Provided"]  , Response::HTTP_BAD_REQUEST );    
+    }
+    
+
+    public function getTweet(Request $request,$id){
+    
+        if (!empty($id)){
+            
+            $inside = Tweet::first("id" , $id);
+
+            if (!empty($inside))      
+                return Response::json($inside , Response::HTTP_OK , 0 );          
+            else 
+                return Response::json( ["Message"=> "Tweet id Provided Does Not Exist In The Database"]  , Response::HTTP_BAD_REQUEST );
+        }
+        else 
+            return Response::json( ["Message"=> "Tweet id Not Provided"]  , Response::HTTP_BAD_REQUEST );
+    }
+
+
+    public function home (Request $request){
+
+        $app = Env::get('APP_NAME');
+        return new View('Tweet.php',compact('app'));
+    }
+}
+    
