@@ -3,68 +3,66 @@ const textArea = document.getElementById('text-area');    // OK
 
 show_All_tweets();
 
-function Manage_data (data){
+function Manage_data(data){
 
-  if (data.Empty != undefined)  
-  {      
-         Manage_html_Empty(data.Empty);
-  }
-  else
-  {
-    let id = [];
-    let content = [];
+    if (data.Empty != undefined){
 
-    data.Tweets.forEach(tweet => {
+        Manage_html_Empty(data.Empty);
+    }
+    else
+    {
+        let id = [];
+        let content = [];
 
-      id.push(tweet.id);
-      content.push(tweet.content);
-    })
+        data.Tweets.forEach(tweet => {
+
+          id.push(tweet.id);
+          content.push(tweet.content);
+        })
     
-      Manage_html(id,content);
-  }
+        Manage_html(id,content);
+    }
 
 }
 
-function Manage_html_Empty (data){
+function Manage_html_Empty(data){
   
-  tweetList.innerHTML = '';
-  tweetList.innerHTML = `
-  <div class="card empty" style="width: 18rem;">
-    <div class="card-body">
-      <h5 class="card-title">Tweet Content</h5>
-      <p class="card-text"><b>${data}</b></p>
-    </div>
-  </div>
-`;    
+    tweetList.innerHTML = '';
 
+    tweetList.innerHTML = `
+      <div class="card empty" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Tweet Content</h5>
+          <p class="card-text"><b>${data}</b></p>
+        </div>
+      </div> `;    
 }
 
-function Manage_html (id,content){
+function Manage_html(id,content){
   
-  tweetList.innerHTML= '';
+    tweetList.innerHTML= '';
   
-  for (let index = 0; index < id.length; index++) {
+    for(let index = 0; index < id.length; index++){
     
-    tweetList.innerHTML += `
-    <div class="card Two" style="width: 25rem;">
-      <div class="card-body Three">   
-        <h5 class="card-title">Tweet Content</h5>
-          <p class="card-text"><b>${content[index]}</b></p>
-          <button  class="btn btn-primary update" onclick = "editTweet(event,${id[index]})" type="submit" id="edit-Tweet">Edit</button>
-          <button  class="btn btn-primary save" onclick = "update_Tweet(event,${id[index]})"  type="submit" id="Save-Tweet">Save</button>
-          <button  class="btn btn-primary " onclick = "deleteTweet(event,${id[index]})" type="submit" id="delete-Tweet">Delete</button>
-          <button  class="btn btn-primary " data-con =${content[index]} id = "showCom" onclick = "showComments(event,${id[index]})">Comments</button>
-      </div>
-    </div>
-    `;
-  }  
+      tweetList.innerHTML += `
+        <div class="card Two" style="width: 25rem;">
+          <div class="card-body Three">   
+            <h5 class="card-title">Tweet Content</h5>
+            <p class="card-text"><b>${content[index]}</b></p>
+            <button  class="btn btn-primary update" onclick = "editTweet(event,${id[index]})" type="submit" id="edit-Tweet">Edit</button>
+            <button  class="btn btn-primary save" onclick = "update_Tweet(event,${id[index]})"  type="submit" id="Save-Tweet">Save</button>
+            <button  class="btn btn-primary " onclick = "deleteTweet(event,${id[index]})" type="submit" id="delete-Tweet">Delete</button>
+            <button  class="btn btn-primary " data-con =${content[index]} id = "showCom" onclick = "showComments(event,${id[index]})">Comments</button>
+          </div>
+        </div>   `;
+    }  
 }
 
 //----------------------------------Show All Tweets----------------------------------------------                                   
 
 function show_All_tweets(){
    
-    document.querySelector('.text-area').value='';
+    document.querySelector('.text-area').value = '';
     fetch('http://localhost:8080/tweet/get/all')
     .then(res => res.json())
     .then(data =>  { Manage_data(data)})
@@ -76,7 +74,7 @@ function createTweet(event){
 
     event.preventDefault();
     
-    fetch('http://localhost:8080/tweet' , { method: 'POST' , headers: { 'content-Type': 'application/json' } , body: JSON.stringify ({  content : textArea.value })  })
+    fetch('http://localhost:8080/tweet' , { method: 'POST' , headers: { 'content-Type': 'application/json' } , body: JSON.stringify({  content : textArea.value })  })
     .then(res => res.json())
 
     document.querySelector('.text-area').value='';
