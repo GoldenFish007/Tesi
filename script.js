@@ -270,7 +270,7 @@ function deleteComment(event,id){  //OK
 
 //----------------------------------edit Comment----------------------------------------------                                   
 
-function editComment(event,id){
+function editComment(event,id){  //OK
  
   event.preventDefault();
 
@@ -289,7 +289,7 @@ function editComment(event,id){
 }
 
 
-function update_Comment(event,id){
+function update_Comment(event,id){ //OK
 
     event.preventDefault();
     
