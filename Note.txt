@@ -1,0 +1,26 @@
+
+
+		Vessel 38	Vessel 39	Vessel 2298	Vessel 2304	Vessel 2317	Vessel 39369	Vessel 107536
+
+
+Ultima Riga 	224986		505789		731167		956544		1176614		1399090		 1660514		
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+lat :- latitude 
+
+lon :- longitude
+
+cog :- course_over_ground
+
+sog :- speed_over_ground
+
+hdg :- heading of the Vessel
+
+rot :- rate of Turn of the Vessel
+
+
+
+https://codingsight.com/how-to-create-table-with-multiple-foreign-keys-and-not-get-confused/
+
+	
